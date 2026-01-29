@@ -404,13 +404,18 @@
       }
 
       document.getElementById("load").addEventListener("click", () => {
-        const input = document.getElementById("input").value;
+        const input = document.getElementById("input").value.trim();
+
         try {
-          const save = JSON.parse(input);
+          let save = JSON.parse(input);
+          // Unwrap if JSON has a "data" wrapper
+          if (save.data && typeof save.data === "object") {
+            save = save.data;
+          }
           load(save);
         } catch (e) {
           if (e instanceof SyntaxError) {
-            fetchAndLoadConfig(input);
+              fetchAndLoadConfig(input);
           }
         }
       });
